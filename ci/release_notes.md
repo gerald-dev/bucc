@@ -1,25 +1,16 @@
-## Director bosh-dns
-Support for bosh-dns from the bucc VM itself has been added.
-This can be used for example to point to a syslog endpoint which still needs to be deployed.
-It has been implemented via a process which uses fsnotify to watch the director blobstore for dns updates.
-These records are then propagated into the vanilla bosh-dns process.
+## Concourse 5 (5.3.0 to be precise)
+It took way longer then anticipated but we are finally able to ship Concourse 5.
+Due to the way Concourse 5 embeds garden (incompatible with the garden cpi),
+we where forced to make a PR [concourse/3806](https://github.com/concourse/concourse/pull/3806) to restore the ability to use an external garden daemon.
+
+## Docker Desktop support
+This release adds support for [Docker Desktop](https://www.docker.com/products/docker-desktop), giving people developing locally a solid alternative for the `virtualbox` cpi.
+To use it, just run:
+```
+bucc up --cpi docker-desktop --lite
+```
 
 ### Bug fixes:
-- docker cpi: credhub, concourse and vault proxy ports are now forwarded (thanks @bodymindarts)
-- fixed issue where bucc up won't work if there was a `@` in the path (thanks @bodymindarts) [163](https://github.com/starkandwayne/bucc/pull/163)
-- thanks @matthewcosgrove for fixing a typo [166](https://github.com/starkandwayne/bucc/pull/166)
-- thanks @mogul for fixing a b0rked word [170](https://github.com/starkandwayne/bucc/pull/170)
-- UAA users with concourse.main scope can now login to concourse main team
-- Update fly if version does not match the release
-- Don't cache unsupported flags
-- Added --recreate support to bucc up
-- Concourse workers are marked as `ephemeral` which fixes [28](https://github.com/starkandwayne/bucc/issues/28)
-
-### Small improvements:
-- Added Virtualbox `--remote` flag (thanks @bodymindarts)
-- Added `--concourse-syslog` flag
-- Added `--ldap` flag
-- Added `/concourse/main/default_ca` to credhub can be used to sign concourse lb certs
-- Added `--internal-ip` flag to `bucc {info,fly}` to target concourse when lb is down
-- Added `bucc rotate-certs` which regenerates all bucc ssl certificates
-- Switch to postgres bbr in favor of director/uaa/credhub/atc bbr jobs
+- [bbl] fixed Azure rule conflicts (thanks @warroyo)
+- Improved README (thanks @dashaun)
+- CREDHUB_SERVER is now correctly set by `bucc env`
